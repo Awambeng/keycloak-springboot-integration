@@ -1,0 +1,38 @@
+spring:
+  config:
+    import: "optional:file:.env[.properties]"
+  application:
+    name: keycloak-springboot-integration
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: ${KEYCLOAK_CLIENT_ID}
+            client-secret: ${KEYCLOAK_CLIENT_SECRET}
+            scope: openid, profile, email
+            authorization-grant-type: authorization_code
+            redirect-uri: ${KEYCLOAK_REDIRECT_URI}
+        provider:
+          keycloak:
+            issuer-uri: ${KEYCLOAK_ISSUER_URI}
+
+server:
+  port: 8081
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+        keycloak: DEBUG
+
+keycloak:
+  realm: spring-boot-realm
+  auth-server-url: ${KEYCLOAK_AUTH_SERVER_URL}
+  resource: ${KEYCLOAK_CLIENT_ID}
+  logout:
+    redirect-uri: ${KEYCLOAK_LOGOUT_REDIRECT_URI}
+  credentials:
+    secret: ${KEYCLOAK_CLIENT_SECRET}
+  bearer-only: true
